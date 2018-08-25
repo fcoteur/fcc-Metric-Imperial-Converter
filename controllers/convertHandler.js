@@ -21,10 +21,18 @@ function ConvertHandler() {
   
   this.getUnit = function(input) {
     var result;
+    let validUnits = ['gal','l','mi','km','lbs','kg','GAL','L','MI','KM','LBS','KG'];
+    // retrieve the valid number from the input string
     var num = input.match(/^\d*(\.\d*|)(\/\d+|\.\d*|)/g);
+    // if successfull test the remain of the string against the list of valid units
     if (num) {
-      var indexFristLetter = num[0].length;
-      result = input.slice(indexFristLetter, input.length +1);  
+      let indexFristLetter = num[0].length;
+      let unit = input.slice(indexFristLetter, input.length +1); 
+      let found = validUnits.find((element) => {
+        return element == unit;
+      });
+      if (found) {result = unit}
+      
     } else {
       result = false;
     }
@@ -35,7 +43,7 @@ function ConvertHandler() {
     var result;
     switch (initUnit) {
       case 'gal':
-        result = 'L';
+        result = 'l';
         break;
       case 'lbs':
         result = 'kg';
@@ -47,14 +55,16 @@ function ConvertHandler() {
         result = 'mi';
         break;
       case 'kg':
-        result = 'mi';
+        result = 'lbs';
         break;
-      case 'L':
+      case 'l':
         result = 'gal';
         break;
       default:
+        result=null;
     };
     return result;
+    
   };
 
   this.spellOutUnit = function(unit) {
@@ -63,22 +73,23 @@ function ConvertHandler() {
       case 'gal':
         result = 'gallons';
         break;
-      case 'lbs':
-        result='pound';
+      case 'l':
+        result='liters';
         break;
       case 'mi':
         result='miles';
         break;
-      case 'L':
-        result='liters';
+      case 'km':
+        result = 'kilometers';
+        break;
+      case 'lbs':
+        result='pounds';
         break;
       case 'kg':
         result='kilograms';
         break;
-      case 'km':
-        result = 'kilometers';
-        break;
       default:
+        result = null;
     };
     return result;
   };
