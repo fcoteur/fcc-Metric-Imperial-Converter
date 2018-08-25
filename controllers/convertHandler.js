@@ -9,16 +9,25 @@
 function ConvertHandler() {
   
   this.getNum = function(input) {
-    var indexFristLetter = input.search(/[A-Za-z]+/g);
-    var result;
-    if (indexFristLetter=== 0) {result = 1} else {result = eval(input.slice(0,indexFristLetter));}
+    var result;   
+    var num = input.match(/^\d*(\.\d*|)(\/\d+|\.\d*|)/g);
+    if (num) {
+      result = eval(num[0]);
+    } else { 
+      result = false;
+    }
     return result;
   };
   
   this.getUnit = function(input) {
     var result;
-    var indexFristLetter = input.search(/[A-Za-z]+/g);
-    var result = input.slice(indexFristLetter, input.length +1);  
+    var num = input.match(/^\d*(\.\d*|)(\/\d+|\.\d*|)/g);
+    if (num) {
+      var indexFristLetter = num[0].length;
+      result = input.slice(indexFristLetter, input.length +1);  
+    } else {
+      result = false;
+    }
     return result;
   };
   
