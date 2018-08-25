@@ -10,18 +10,29 @@ function ConvertHandler() {
   
   this.getNum = function(input) {
     var result;   
+    
     var num = input.match(/^\d*(\.\d*|)(\/\d+|\.\d*|)/g);
-    if (num) {
-      result = eval(num[0]);
-    } else { 
-      result = false;
-    }
+    var indexFirstChar = input.search(/[a-zA-Z]/g);
+    console.log(num, num[0].length, indexFirstChar); 
+    
+    if ((num) && (num[0].length == indexFirstChar)) {result = eval(num[0])}
+//    if ((!num) && (num[0].length == indexFirstChar)) {result = 'no number'}
+    if ((num) && (num[0].length != indexFirstChar)) {result = false}
+    if (typeof result == "undefined") {result = 'no number'}
+   console.log(result);
     return result;
   };
   
   this.getUnit = function(input) {
     var result;
     let validUnits = ['gal','l','mi','km','lbs','kg','GAL','L','MI','KM','LBS','KG'];
+    var indexFirstChar = input.search(/[a-zA-Z]/g);
+    let unit = input.slice(indexFirstChar, input.length +1);
+    let found = validUnits.find((element) => {
+        return element == unit;
+      }); 
+    if (found) {result = unit} else {result=false}
+    /*
     // retrieve the valid number from the input string
     var num = input.match(/^\d*(\.\d*|)(\/\d+|\.\d*|)/g);
     // if successfull test the remain of the string against the list of valid units
@@ -36,6 +47,7 @@ function ConvertHandler() {
     } else {
       result = false;
     }
+    */
     return result;
   };
   
@@ -57,13 +69,17 @@ function ConvertHandler() {
       case 'kg':
         result = 'lbs';
         break;
+      case 'L':
+        result = 'gal';
+        break;
       case 'l':
         result = 'gal';
         break;
       default:
-        result=null;
+        result =null;
     };
     return result;
+    
     
   };
 
@@ -74,6 +90,9 @@ function ConvertHandler() {
         result = 'gallons';
         break;
       case 'l':
+        result='liters';
+        break;
+      case 'L':
         result='liters';
         break;
       case 'mi':
